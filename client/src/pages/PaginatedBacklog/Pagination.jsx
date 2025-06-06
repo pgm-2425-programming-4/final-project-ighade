@@ -56,7 +56,13 @@ export function Pagination({ currentPage, pageCount, onPageChanged }) {
   });
 
   return (
-    <nav className="pagination" role="navigation" aria-label="pagination">
+    <nav className="pagination" role="navigation" aria-label="pagination" 
+      style={{display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      gap: "1rem",
+      marginTop: "2rem",
+      flexWrap: "wrap",}}>
       <button
         className="pagination-previous"
         disabled={currentPage === 1}
@@ -64,6 +70,7 @@ export function Pagination({ currentPage, pageCount, onPageChanged }) {
       >
         Previous
       </button>
+      <ul style={{display:"flex", gap:".25rem", listStyle: "none", padding: "0"}} className="pagination-list">{pageLinks}</ul>
       <button
         className="pagination-next"
         disabled={currentPage === pageCount}
@@ -71,7 +78,6 @@ export function Pagination({ currentPage, pageCount, onPageChanged }) {
       >
         Next page
       </button>
-      <ul className="pagination-list">{pageLinks}</ul>
     </nav>
   );
 }

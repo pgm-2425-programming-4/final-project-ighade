@@ -376,6 +376,7 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
 export interface ApiCategorieCategorie extends Struct.CollectionTypeSchema {
   collectionName: 'categories';
   info: {
+    description: '';
     displayName: 'Categorie';
     pluralName: 'categories';
     singularName: 'categorie';
@@ -395,6 +396,7 @@ export interface ApiCategorieCategorie extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private;
     name: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
+    tasks: Schema.Attribute.Relation<'manyToMany', 'api::task.task'>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -404,6 +406,7 @@ export interface ApiCategorieCategorie extends Struct.CollectionTypeSchema {
 export interface ApiProjectProject extends Struct.CollectionTypeSchema {
   collectionName: 'projects';
   info: {
+    description: '';
     displayName: 'Project';
     pluralName: 'projects';
     singularName: 'project';
@@ -422,6 +425,7 @@ export interface ApiProjectProject extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
+    tasks: Schema.Attribute.Relation<'oneToMany', 'api::task.task'>;
     title: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -441,6 +445,10 @@ export interface ApiTaskTask extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
+    categories: Schema.Attribute.Relation<
+      'manyToMany',
+      'api::categorie.categorie'
+    >;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -448,7 +456,7 @@ export interface ApiTaskTask extends Struct.CollectionTypeSchema {
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::task.task'> &
       Schema.Attribute.Private;
-    project: Schema.Attribute.Relation<'oneToOne', 'api::project.project'>;
+    project: Schema.Attribute.Relation<'manyToOne', 'api::project.project'>;
     publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &

@@ -20,3 +20,4 @@ function PaginatedBacklog() {
         </div>
     )
 }
+export default PaginatedBacklog
