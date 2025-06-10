@@ -13,7 +13,7 @@ function Backlog() {
     isLoading,
     error,
   } = useQuery({
-    queryKey: ["projects"],
+    queryKey: ["backlog"],
     queryFn: () => fetchData("projects", "tasks"),
   });
   

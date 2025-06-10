@@ -433,6 +433,35 @@ export interface ApiProjectProject extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiStatusStatus extends Struct.CollectionTypeSchema {
+  collectionName: 'statuses';
+  info: {
+    displayName: 'status';
+    pluralName: 'statuses';
+    singularName: 'status';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::status.status'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    tasks: Schema.Attribute.Relation<'oneToMany', 'api::task.task'>;
+    title: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiTaskTask extends Struct.CollectionTypeSchema {
   collectionName: 'tasks';
   info: {
@@ -458,6 +487,7 @@ export interface ApiTaskTask extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private;
     project: Schema.Attribute.Relation<'manyToOne', 'api::project.project'>;
     publishedAt: Schema.Attribute.DateTime;
+    statuses: Schema.Attribute.Relation<'manyToOne', 'api::status.status'>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -919,7 +949,6 @@ export interface PluginUsersPermissionsUser
   };
   options: {
     draftAndPublish: false;
-    timestamps: true;
   };
   attributes: {
     blocked: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
@@ -975,6 +1004,7 @@ declare module '@strapi/strapi' {
       'admin::user': AdminUser;
       'api::categorie.categorie': ApiCategorieCategorie;
       'api::project.project': ApiProjectProject;
+      'api::status.status': ApiStatusStatus;
       'api::task.task': ApiTaskTask;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;

@@ -1,9 +1,9 @@
 import { createRoute } from '@tanstack/react-router';
 import { Route as RootRoute } from './__root';
-import Dashboard from '../pages/dashboard';
+import Projects from '../pages/projects';
 
 export const Route = createRoute({
   getParentRoute: () => RootRoute,
-  path: '/',
-  component: Dashboard,
+  path: '/projects/$id',
+  component: Projects,
 });

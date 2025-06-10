@@ -1,25 +1,24 @@
 {
   "kind": "collectionType",
-  "collectionName": "categories",
+  "collectionName": "statuses",
   "info": {
-    "singularName": "categorie",
-    "pluralName": "categories",
-    "displayName": "Categorie",
-    "description": ""
+    "singularName": "status",
+    "pluralName": "statuses",
+    "displayName": "status"
   },
   "options": {
     "draftAndPublish": true
   },
   "pluginOptions": {},
   "attributes": {
-    "name": {
+    "title": {
       "type": "string"
     },
     "tasks": {
       "type": "relation",
-      "relation": "manyToMany",
+      "relation": "oneToMany",
       "target": "api::task.task",
-      "inversedBy": "categories"
+      "mappedBy": "statuses"
     }
   }
 }

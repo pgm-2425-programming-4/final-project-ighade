@@ -10,6 +10,7 @@
   "options": {
     "draftAndPublish": true
   },
+  "pluginOptions": {},
   "attributes": {
     "description": {
       "type": "text"
@@ -25,6 +26,12 @@
       "relation": "manyToMany",
       "target": "api::categorie.categorie",
       "mappedBy": "tasks"
+    },
+    "statuses": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::status.status",
+      "inversedBy": "tasks"
     }
   }
 }
