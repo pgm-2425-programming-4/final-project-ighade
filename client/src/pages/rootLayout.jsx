@@ -21,7 +21,7 @@ function RouteLayout() {
     const projects = projectsData?.data || [];
     // console.log(projects);
 
-    if (isPending) return 'Loading...'
+    // if (isPending) return 'Loading...'
 
     if (error) return 'An error has occurred: ' + error.message
     
@@ -31,7 +31,6 @@ function RouteLayout() {
                 <nav>
                     <div>Projects</div>
                     {projects.map(project => (
-                       
                         <a
                             key={project.id}
                             href={`/projects/${project.id}`}
