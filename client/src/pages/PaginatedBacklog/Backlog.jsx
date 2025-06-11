@@ -5,13 +5,14 @@ import { Pagination } from "./Pagination";
 import { useParams } from "@tanstack/react-router";
 
 function Backlog() {
+  // fetching
   const params = useParams({ from: "/projects/$id/backlog" });
   const [currentPage, setCurrentPage] = useState(1);
 
   const {
     data: backlogData,
-    isLoading,
-    error,
+    isLoading: isLoadingBacklog,
+    error: errorBacklog,
   } = useQuery({
     queryKey: ["backlog", params.id],
     queryFn: () =>
@@ -20,23 +21,35 @@ function Backlog() {
         statuses: { title: { $eq: "Backlog" } },
       }),
   });
+  const {
+    data: projectTitleData,
+    isLoading : isLoadingTitle,
+    error: errorTitle,
+  } = useQuery({
+    queryKey: ["projectTitle", params.id],
+    queryFn: () =>
+      fetchData("projects", null, {
+        id: { $eq: params.id }
+      }),
+        
+      
+  });
 
+  // data bewerken/init
+  const projectTitle = projectTitleData?.data?.[0]?.title || "Project";
   const backlog = backlogData?.data || [];
   const pageSize = 5;
   const pageCount = Math.ceil(backlog.length / pageSize);
   const visibleTasks = backlog.slice((currentPage - 1) * pageSize, currentPage * pageSize);
 
-  if (isLoading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error.message}</p>;
+  if (isLoadingBacklog || isLoadingTitle) return <p>Loading...</p>;
+  if (errorBacklog || errorTitle) return <p>ErrorBacklog: {errorBacklog.message} <br /> ErrorTitle: {errorTitle.message} </p>;
 
   // Pak de projecttitel uit de eerste taak (als er taken zijn)
-  const projectTitle = backlog[0]?.project?.title || "Project";
-
   return (
     <>
       <div style={{ padding: "2rem" }}>
-        <h2>Project Backlog</h2>
-        <h3>Tasks for: {projectTitle}</h3>
+        <h2>Backlog for {projectTitle}</h2>
         <ul>
           {visibleTasks.map((task) => (
             <li key={task.id}>{task.description}</li>

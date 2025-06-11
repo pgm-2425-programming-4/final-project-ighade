@@ -30,15 +30,19 @@ function RouteLayout() {
             <aside>
                 <nav>
                     <div>Projects</div>
+                    <ul>
                     {projects.map(project => (
-                        <a
-                            key={project.id}
-                            href={`/projects/${project.id}`}
-                        >
-                            {project.title}
-                        </a>
-                    
+                        <li>
+                            <a
+                                key={project.id}
+                                href={`/projects/${project.id}`}
+                            >
+                                {project.title}
+                            </a>
+                        </li>
                     ))}
+
+                    </ul>
                         {/* <div style={{ width: "2rem", height: "2rem", backgroundColor: "blue" }}></div> */}
                 </nav>
             </aside>
