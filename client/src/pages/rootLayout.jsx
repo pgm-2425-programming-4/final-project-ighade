@@ -29,7 +29,7 @@ function RouteLayout() {
         <>
             <aside>
                 <nav>
-                    <div>routes</div>
+                    <div>Projects</div>
                     {projects.map(project => (
                        
                         <a
