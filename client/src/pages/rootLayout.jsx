@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Outlet } from '@tanstack/react-router';
+import { Outlet, Link } from '@tanstack/react-router';
 import { API_URL } from '../../constants';
 import { fetchData } from '../api/data';
 
@@ -29,19 +29,23 @@ function RouteLayout() {
         <>
             <aside>
                 <nav>
+                    <ul>
+                        <li><Link to="/">Home</Link></li>
+                    </ul>
                     <div>Projects</div>
                     <ul>
                     {projects.map(project => (
-                        <li>
-                            <a
-                                key={project.id}
-                                href={`/projects/${project.id}`}
-                            >
+                        <li key={project.id}>
+                            <Link to={`/projects/${project.id}`}>
                                 {project.title}
-                            </a>
+                            </Link>
                         </li>
                     ))}
 
+                    </ul>
+                    <div>Info</div>
+                    <ul>
+                        <li><Link to="/about">About</Link></li>
                     </ul>
                         {/* <div style={{ width: "2rem", height: "2rem", backgroundColor: "blue" }}></div> */}
                 </nav>

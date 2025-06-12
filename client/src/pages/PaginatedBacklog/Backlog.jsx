@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { fetchData } from "../../api/data";
 import { Pagination } from "./Pagination";
-import { useParams } from "@tanstack/react-router";
+import { useParams, Link } from "@tanstack/react-router";
 
 function Backlog() {
   // fetching
@@ -50,6 +50,7 @@ function Backlog() {
     <>
       <div style={{ padding: "2rem" }}>
         <h2>Backlog for {projectTitle}</h2>
+        <Link to={`/projects/${params.id}`}><button>Go Back</button></Link>
         <ul>
           {visibleTasks.map((task) => (
             <li key={task.id}>{task.description}</li>

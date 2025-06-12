@@ -1,10 +1,9 @@
-import Backlog from "./PaginatedBacklog/Backlog";
 function Dashboard() {
 
   return (
       <div style={{ padding: 20 }}>
-        <h1>Welcome Dashboard</h1>
-        {/* <Backlog /> */}
+      <h1>Welcome</h1>
+      <p>This is the home page to get started click on a project on the left side of the screen.</p>
         
     </div>
   );
