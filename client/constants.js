@@ -1,7 +1,7 @@
 	
 export const API_URL = import.meta.env.PROD
-  ? "https://jammin-playground.onrender.com/api"
+  ? "https://final-project-ighade.onrender.com/api/"
   : "http://localhost:1337/api/";	
 export const API_TOKEN = import.meta.env.PROD
-  ? "PROD token"	
+  ? "0db80cdb0a9327b1097e55697c03d5fb98038ee586667a1c442f1152e9a075460898cd8351395dd42597fd332919ba3236c8dd66efa7dc8251c62978be5d2f62b45ae254b8e36ecb9d9e549c4a69546700e69a59b2ca7b68601b62b0ffaddb0944d7a5607957d36c3698f0d8f82e33a6f8ce78fd46aa53a2f1baebbdf6507f78"	
   : "f152f7fc15192fa9994769dade6106d54390ed84ffc01126371f2504ab23f41eaca117aeb0efaddedabd70ab8142a60ba6df2ff56a9a770990af7f5998251c52758033ac6560216d90eee7bf875692880a49f08dc55595a290b9772284a18144e43734495f8371f5947545452292ed9f1cb865ed9c5b0c89d0695f3603be6f57";
