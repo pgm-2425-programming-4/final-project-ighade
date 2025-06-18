@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { fetchData } from '../api/data';
 import { useState, useRef } from 'react';
 import NewTask from './newTask';
+import DialogTasks from './dialogTasks';
 import { API_URL, API_TOKEN } from '../../constants';
 
 function Projects() {
@@ -60,7 +61,6 @@ function Projects() {
     const tasks = tasksData?.data || [];
     const projects = projectsData?.data || [];
     const categories = categorieData?.data || [];
-    console.log(tasks);
     //gebruik de data
     return (
         <>
@@ -72,62 +72,14 @@ function Projects() {
             refetchTasks={refetchTasks}
             />
 
-            <dialog ref={dialogStatus} className="dialog-status">
-                {selectedTask && (
-                    <form
-                    onSubmit={async (e) => {
-                        e.preventDefault();
-                        const formData = new FormData(e.target);
-                        const newStatusId = formData.get("status");
-
-                            try {
-                                await fetch(API_URL + "tasks/" + selectedTask.documentId, {
-                                    method: "PUT",
-                                   headers: {
-                                    Authorization: `Bearer ${API_TOKEN}`,
-                                    "Content-Type": "application/json",
-                                },
-                                body: JSON.stringify({ data: { statuses: newStatusId} }),
-                                });
-                            
-                            
-                                refetchTasks(); // refresht de takenlijst na update
-                                dialogStatus.current.close();
-                        } catch (error) {
-                        alert("Fout bij updaten status: " + error.message);
-                        }
-                    }}
-                    >
-                    <h3>Status wijzigen voor taak:</h3>
-                    <p><strong>{selectedTask.description}</strong></p>
-
-                    <label htmlFor="status-select">Status</label>
-                    <select
-                        id="status-select"
-                        name="status"
-                        defaultValue={selectedTask.statuses.id}
-                        required
-                    >
-                        {status.map((s) => (
-                        <option key={s.documentId} value={s.id}>
-                            {s.title}
-                        </option>
-                        ))}
-                    </select>
-
-                    <div style={{ marginTop: "1rem" }}>
-                        <button type="submit">Opslaan</button>
-                        <button
-                        type="button"
-                        onClick={() => dialogStatus.current.close()}
-                        style={{ marginLeft: "1rem" }}
-                        >
-                        Annuleren
-                        </button>
-                    </div>
-                    </form>
-                )}
-            </dialog>
+            <DialogTasks
+            dialogRef={dialogStatus}
+            selectedTask={selectedTask}
+            statusList={status}
+            refetchTasks={refetchTasks}
+            API_URL={API_URL}
+            API_TOKEN ={API_TOKEN}
+            />
 
 
             <section className="task-controls">
