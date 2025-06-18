@@ -80,10 +80,19 @@ function Projects() {
                         const formData = new FormData(e.target);
                         const newStatusId = formData.get("status");
 
-                        try {
-                        await updateTaskStatus(selectedTask.id, Number(newStatusId));
-                        refetchTasks(); // refresht de takenlijst na update
-                        dialogStatus.current.close();
+                            try {
+                                await fetch(API_URL + "tasks/" + selectedTask.documentId, {
+                                    method: "PUT",
+                                   headers: {
+                                    Authorization: `Bearer ${API_TOKEN}`,
+                                    "Content-Type": "application/json",
+                                },
+                                body: JSON.stringify({ data: { statuses: newStatusId} }),
+                                });
+                            
+                            
+                                refetchTasks(); // refresht de takenlijst na update
+                                dialogStatus.current.close();
                         } catch (error) {
                         alert("Fout bij updaten status: " + error.message);
                         }
@@ -100,7 +109,7 @@ function Projects() {
                         required
                     >
                         {status.map((s) => (
-                        <option key={s.id} value={s.id}>
+                        <option key={s.documentId} value={s.id}>
                             {s.title}
                         </option>
                         ))}
@@ -132,11 +141,11 @@ function Projects() {
                     {tasks
                         .flatMap((task) => task.categories || [])
                         .reduce((acc, cat) => {
-                        if (!acc.some((c) => c.id === cat.id)) acc.push(cat);
+                        if (!acc.some((c) => c.documentId === cat.documentId)) acc.push(cat);
                         return acc;
                         }, [])
                         .map((categorie) => (
-                        <option key={categorie.id} value={categorie.id}>
+                        <option key={categorie.documentId} value={categorie.documentId}>
                             {categorie.title}
                         </option>
                         ))}
@@ -171,21 +180,21 @@ function Projects() {
                 {status
                     .filter((status) => status.title !== "Backlog")
                     .map((status) => (
-                        <div key={status.id} className="task-grid__column">
+                        <div key={status.documentId} className="task-grid__column">
                             <h2 className="task-grid__title">{status.title}</h2>
                             {tasks
                                 .filter(
                                     (task) =>
                                         selectedCategory === "" ||
-                                        (task.categories || []).some((cat) => cat.id === Number(selectedCategory))
+                                        (task.categories || []).some((cat) => cat.documentId === selectedCategory)
                                 )
                                 .filter((task) =>
                                     task.description.toLowerCase().includes(filteredTasks.toLowerCase())
                                 )
-                                .filter((task) => task.statuses.id === status.id)
+                                .filter((task) => task.statuses.documentId === status.documentId)
                                 .map((task) => (
                                     <div
-                                    key={task.id}
+                                    key={task.documentId}
                                     className="task-card"
                                     onClick={() => {
                                     setSelectedTask(task);
@@ -195,7 +204,7 @@ function Projects() {
                                         <p className="task-card__description">{task.description}</p>
                                         <div className="task-card__badges">
                                             {task.categories?.map((categorie) => (
-                                                <span key={categorie.id} className="task-card__badge">
+                                                <span key={categorie.documentId} className="task-card__badge">
                                                     {categorie.title}
                                                 </span>
                                             ))}
