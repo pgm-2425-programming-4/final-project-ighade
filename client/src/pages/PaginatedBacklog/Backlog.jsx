@@ -48,20 +48,28 @@ function Backlog() {
   // Pak de projecttitel uit de eerste taak (als er taken zijn)
   return (
     <>
-      <div style={{ padding: "2rem" }}>
-        <h2>Backlog for {projectTitle}</h2>
-        <Link to={`/projects/${params.id}`}><button>Go Back</button></Link>
-        <ul>
-          {visibleTasks.map((task) => (
-            <li key={task.id}>{task.description}</li>
-          ))}
-        </ul>
-        <Pagination
-          currentPage={currentPage}
-          pageCount={pageCount}
-          onPageChanged={setCurrentPage}
-        />
+     <div className="backlog">
+      <div className="backlog__header">
+        <h2 className="backlog__title">Backlog for {projectTitle}</h2>
+        <Link to={`/projects/${params.id}`}>
+          <button className="backlog__button">Go Back</button>
+        </Link>
       </div>
+
+      <ul className="backlog__list">
+        {visibleTasks.map((task) => (
+          <li key={task.id} className="backlog__item">
+            <p className="backlog__description">{task.description}</p>
+          </li>
+        ))}
+      </ul>
+
+      <Pagination
+        currentPage={currentPage}
+        pageCount={pageCount}
+        onPageChanged={setCurrentPage}
+      />
+    </div>
     </>
   );
 }

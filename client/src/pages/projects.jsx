@@ -3,17 +3,15 @@ import { useQuery } from '@tanstack/react-query';
 import { fetchData } from '../api/data';
 import { useState, useRef } from 'react';
 import NewTask from './newTask';
-// import { useFormik } from 'formik';
-// import { API_URL, API_TOKEN } from '../../constants';
+import { API_URL, API_TOKEN } from '../../constants';
 
 function Projects() {
     //nodige hooks
     const [selectedCategory, setSelectedCategory] = useState("");
     const [filteredTasks, setFilteredTasks] = useState("");
     const dialogRef = useRef(null);
-
-
-    
+    const dialogStatus = useRef(null);
+    const [selectedTask, setSelectedTask] = useState(null);
 
 
     //haal data op van de API
@@ -73,6 +71,55 @@ function Projects() {
             categories={categories} 
             refetchTasks={refetchTasks}
             />
+
+            <dialog ref={dialogStatus} className="dialog-status">
+                {selectedTask && (
+                    <form
+                    onSubmit={async (e) => {
+                        e.preventDefault();
+                        const formData = new FormData(e.target);
+                        const newStatusId = formData.get("status");
+
+                        try {
+                        await updateTaskStatus(selectedTask.id, Number(newStatusId));
+                        refetchTasks(); // refresht de takenlijst na update
+                        dialogStatus.current.close();
+                        } catch (error) {
+                        alert("Fout bij updaten status: " + error.message);
+                        }
+                    }}
+                    >
+                    <h3>Status wijzigen voor taak:</h3>
+                    <p><strong>{selectedTask.description}</strong></p>
+
+                    <label htmlFor="status-select">Status</label>
+                    <select
+                        id="status-select"
+                        name="status"
+                        defaultValue={selectedTask.statuses.id}
+                        required
+                    >
+                        {status.map((s) => (
+                        <option key={s.id} value={s.id}>
+                            {s.title}
+                        </option>
+                        ))}
+                    </select>
+
+                    <div style={{ marginTop: "1rem" }}>
+                        <button type="submit">Opslaan</button>
+                        <button
+                        type="button"
+                        onClick={() => dialogStatus.current.close()}
+                        style={{ marginLeft: "1rem" }}
+                        >
+                        Annuleren
+                        </button>
+                    </div>
+                    </form>
+                )}
+            </dialog>
+
 
             <section className="task-controls">
                 <form className="task-controls__form" onSubmit={(e) => e.preventDefault()}>
@@ -137,7 +184,14 @@ function Projects() {
                                 )
                                 .filter((task) => task.statuses.id === status.id)
                                 .map((task) => (
-                                    <div key={task.id} className="task-card">
+                                    <div
+                                    key={task.id}
+                                    className="task-card"
+                                    onClick={() => {
+                                    setSelectedTask(task);
+                                    dialogStatus.current?.showModal();
+                                    }}
+                                    >
                                         <p className="task-card__description">{task.description}</p>
                                         <div className="task-card__badges">
                                             {task.categories?.map((categorie) => (
@@ -151,8 +205,6 @@ function Projects() {
                         </div>
                     ))}
             </section>
-
-  
         </>
     );
 };

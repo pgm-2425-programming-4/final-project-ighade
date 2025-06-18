@@ -2,10 +2,7 @@ export function Pagination({ currentPage, pageCount, onPageChanged }) {
   let pageNumberArray;
 
   if (pageCount <= 6) {
-    pageNumberArray = [];
-    for (let i = 0; i < pageCount; i++) {
-      pageNumberArray.push(i + 1);
-    }
+    pageNumberArray = Array.from({ length: pageCount }, (_, i) => i + 1);
   } else if (currentPage > 3 && currentPage < pageCount - 2) {
     pageNumberArray = [
       1,
@@ -29,54 +26,41 @@ export function Pagination({ currentPage, pageCount, onPageChanged }) {
     ];
   }
 
-  const pageLinks = [];
-  pageNumberArray.forEach((pageNumber, index) => {
-    if (pageNumber === null) {
-      pageLinks.push(
-        <li key={index}>
-          <span className="pagination-ellipsis">&hellip;</span>
-        </li>
-      );
-    } else {
-      pageLinks.push(
-        <li key={index}>
-          <button
-            className={
-              "pagination-link " +
-              (pageNumber === currentPage ? "is-current" : "")
-            }
-            aria-label={`Go to page ${pageNumber}`}
-            onClick={() => onPageChanged(pageNumber)}
-          >
-            {pageNumber}
-          </button>
-        </li>
-      );
-    }
-  });
-
   return (
-    <nav className="pagination" role="navigation" aria-label="pagination" 
-      style={{display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      gap: "1rem",
-      marginTop: "2rem",
-      flexWrap: "wrap",}}>
+    <nav className="pagination" role="navigation" aria-label="pagination">
       <button
-        className="pagination-previous"
+        className="pagination__button pagination__button--prev"
         disabled={currentPage === 1}
         onClick={() => onPageChanged(currentPage - 1)}
       >
         Previous
       </button>
-      <ul style={{display:"flex", gap:".25rem", listStyle: "none", padding: "0"}} className="pagination-list">{pageLinks}</ul>
+
+      <ul className="pagination__list">
+        {pageNumberArray.map((pageNumber, index) =>
+          pageNumber === null ? (
+            <li key={index} className="pagination__ellipsis">&hellip;</li>
+          ) : (
+            <li key={index}>
+              <button
+                className={`pagination__link${
+                  pageNumber === currentPage ? " pagination__link--current" : ""
+                }`}
+                onClick={() => onPageChanged(pageNumber)}
+              >
+                {pageNumber}
+              </button>
+            </li>
+          )
+        )}
+      </ul>
+
       <button
-        className="pagination-next"
+        className="pagination__button pagination__button--next"
         disabled={currentPage === pageCount}
         onClick={() => onPageChanged(currentPage + 1)}
       >
-        Next page
+        Next
       </button>
     </nav>
   );

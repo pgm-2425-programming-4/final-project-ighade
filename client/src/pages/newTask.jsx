@@ -24,18 +24,41 @@ function NewTask({dialogRef, params, status, categories, refetchTasks }) {
               categories: [],
             },
             onSubmit: async (values) => {
-              const dataToSend = {
-                data: 
-                  {
-                    project: params.id ,
-                    description: values.description,
-                    statuses: values.statuses,
-                    categories: values.categories.filter(cat => cat !== "new"), // exclude "new" if present
-                  }
-                
-                };
+              let categories = values.categories.filter(cat => cat !== "new").map(String);
         
-              // Example POST request
+              // If newTag is filled, create the category first
+              let newCategoryId = null;
+              if (
+                values.categories.includes("new") &&
+                values.newTag &&
+                values.newTag.trim() !== ""
+              ) {
+                const catRes = await fetch(`${API_URL}categories`, {
+                  method: "POST",
+                  headers: {
+                    Authorization: `Bearer ${API_TOKEN}`,
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({ data: { title: values.newTag.trim() } }),
+                });
+                  const catData = await catRes.json();
+                console.log("New category created:", catData);
+                newCategoryId = catData?.data?.id;
+                if (newCategoryId) {
+                  categories.push(String(newCategoryId));
+                }
+              }
+        
+              const dataToSend = {
+                data: {
+                  project: params.id,
+                  description: values.description,
+                  statuses: values.statuses ,
+                  categories: categories,
+                }
+                };
+                
+              console.log("Data to send:", dataToSend);
               await fetch(`${API_URL}tasks`, {
                 method: "POST",
                 headers: {
@@ -44,8 +67,10 @@ function NewTask({dialogRef, params, status, categories, refetchTasks }) {
                 },
                 body: JSON.stringify(dataToSend),
               });
-                
+                console.log("Task created successfully");
                 await refetchTasks();
+                console.log("Tasks refetched");
+                console.log("Closing dialog");
                 dialogRef.current?.close();
             }
         });
@@ -53,7 +78,7 @@ function NewTask({dialogRef, params, status, categories, refetchTasks }) {
     return (
         <>
        <dialog ref={dialogRef} className="task-dialog">
-    <form onSubmit={handleSubmit} className="task-dialog__form">
+        <form onSubmit={handleSubmit} className="task-dialog__form">
         <h2 className="task-dialog__title">New Task</h2>
         <label className="task-dialog__label">Description</label>
         <input type="text" name="description" className="task-dialog__input" placeholder="Description" value={values.description} onChange={handleChange} />
