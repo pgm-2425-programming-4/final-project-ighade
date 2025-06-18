@@ -8,6 +8,7 @@ import { Route as dashboardRoute } from './routes/dashboard';
 import { Route as projectsRoute } from './routes/projects';
 import { Route as backlogRoute } from './routes/backlog';
 import { Route as aboutRoute } from './routes/about';
+import './App.css';
 
 const routeTree = rootRoute.addChildren([
   dashboardRoute,

@@ -66,7 +66,6 @@ function Projects() {
     //gebruik de data
     return (
         <>
-            ...
             <NewTask 
             dialogRef={dialogRef}
             params={params} 
@@ -75,52 +74,84 @@ function Projects() {
             refetchTasks={refetchTasks}
             />
 
-            <section>
-                <form action="/$id" method="POST">
-                    <select name="" id="" onChange={(e) => setSelectedCategory(e.target.value)} value={selectedCategory}>
-                        <option value="">--Selecteer een tag--</option>
-                        {tasks.flatMap(task => task.categories || [])
-                            .reduce((acc, cat) => {
-                                if (!acc.some(c => c.id === cat.id)) acc.push(cat);
-                                return acc;
-                            }, [])
-                            .map((categorie) => (
-                            <option key={categorie.id} value={categorie.id}>
-                                {categorie.title}
-                            </option>
+            <section className="task-controls">
+                <form className="task-controls__form" onSubmit={(e) => e.preventDefault()}>
+                    <select
+                    className="task-controls__select"
+                    onChange={(e) => setSelectedCategory(e.target.value)}
+                    value={selectedCategory}
+                    >
+                    <option value="">--Selecteer een tag--</option>
+                    {tasks
+                        .flatMap((task) => task.categories || [])
+                        .reduce((acc, cat) => {
+                        if (!acc.some((c) => c.id === cat.id)) acc.push(cat);
+                        return acc;
+                        }, [])
+                        .map((categorie) => (
+                        <option key={categorie.id} value={categorie.id}>
+                            {categorie.title}
+                        </option>
                         ))}
                     </select>
-                    <input type="text" onChange={(e) => setFilteredTasks(e.target.value)} />
-                    <button type='submit'>submit</button>
+                    <input
+                    type="text"
+                    className="task-controls__input"
+                    placeholder="Filter op beschrijving"
+                    onChange={(e) => setFilteredTasks(e.target.value)}
+                    />
+                    <button type="submit" className="task-controls__button">
+                    Filter
+                    </button>
                 </form>
-                <button className='button-task' type='button' onClick={() => dialogRef && dialogRef.current.showModal()}>New Task</button>
-                <Link to={`/projects/${params.id}/backlog`}><button>Backlog</button></Link>
 
-            </section>
-            <section>
-                <h1>active projecten {params.id}</h1>
-                <div>
-                    {status.filter(status => status.title !== "Backlog").map((status) => (
-                        <div key={status.id}>
-                            <h2> {status.title}</h2>
+                <div className="task-controls__actions">
+                    <button
+                    className="task-controls__button task-controls__button--new"
+                    type="button"
+                    onClick={() => dialogRef?.current?.showModal()}
+                    >
+                    New Task
+                    </button>
+                    <Link to={`/projects/${params.id}/backlog`}>
+                    <button className="task-controls__button">Backlog</button>
+                    </Link>
+                </div>
+                </section>
+
+
+            <section className="task-grid">
+                {status
+                    .filter((status) => status.title !== "Backlog")
+                    .map((status) => (
+                        <div key={status.id} className="task-grid__column">
+                            <h2 className="task-grid__title">{status.title}</h2>
                             {tasks
-                                .filter(task => selectedCategory === "" || (task.categories || []).some(cat => cat.id === Number(selectedCategory)))
-                                .filter(task => task.description.toLowerCase().includes(filteredTasks.toLowerCase()))
-                                .filter(task => task.statuses.id === status.id).map((task) => (
-                                <div key={task.id}>
-                                    <p>{task.description}</p>
-                                    {task.categories?.map((categorie) => (
-                                        <span key={categorie.id} className="badge bg-secondary me-1">
-                                            {categorie.title}
-                                        </span>
-                                    )) }
-                                </div>
-                            ))}
+                                .filter(
+                                    (task) =>
+                                        selectedCategory === "" ||
+                                        (task.categories || []).some((cat) => cat.id === Number(selectedCategory))
+                                )
+                                .filter((task) =>
+                                    task.description.toLowerCase().includes(filteredTasks.toLowerCase())
+                                )
+                                .filter((task) => task.statuses.id === status.id)
+                                .map((task) => (
+                                    <div key={task.id} className="task-card">
+                                        <p className="task-card__description">{task.description}</p>
+                                        <div className="task-card__badges">
+                                            {task.categories?.map((categorie) => (
+                                                <span key={categorie.id} className="task-card__badge">
+                                                    {categorie.title}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    </div>
+                                ))}
                         </div>
                     ))}
-                    
-                </div>
             </section>
+
   
         </>
     );

@@ -52,65 +52,50 @@ function NewTask({dialogRef, params, status, categories, refetchTasks }) {
           
     return (
         <>
-        <dialog ref={dialogRef}>
-            <form onSubmit={handleSubmit}>
-                <h2>New Task</h2>
-                <label>Description</label>
-                <input type="text" name="description" placeholder='Description' value={values.description} onChange={handleChange} />
-                <input type="hidden" name="project" value={params.id} />
-                <label>Status</label>
-                <select
-                    name="statuses"
-                    id="status"
-                    value={values.statuses}
-                    onChange={handleChange}
-                    >
-                    <option value="">-- Kies status --</option>
-                    {status.map((status) => (
-                        <option key={status.id} value={status.id}>
-                            {status.title}
-                        </option>
-                    ))}
-                </select>
-    
-                <label>categories</label>
-                <div>
-                    {categories.map(categorie => (
-                        <label key={categorie.id} style={{ display: "block" }}>
-                            <input
-                                type="checkbox"
-                                name="categories"
-                                value={categorie.id}
-                                checked={values.categories?.includes(String(categorie.id))}
-                                onChange={handleCategoryChange}
-                                />
-                            {categorie.title}
-                        </label>
-                    ))}
-                    <label style={{ display: "block" }}>
-                        <input
-                            type="checkbox"
-                            name="categories"
-                            value="new"
-                            checked={values.categories?.includes("new")}
-                            onChange={handleCategoryChange}
-                            />
-                        --New Tag--
-                    </label>
-                    {values.categories?.includes("new") && (
-                        <input
-                        type="text"
-                        name="newTag"
-                        placeholder="Nieuwe tag"
-                        value={values.newTag || ""}
-                        onChange={handleChange}
-                        />
-                    )}
-                </div>
-                <button type="submit">Submit</button>
-            </form>
-            <button className='button-task' type='button' onClick={() => dialogRef && dialogRef.current.close()}>Close</button>
-        </dialog>
+       <dialog ref={dialogRef} className="task-dialog">
+    <form onSubmit={handleSubmit} className="task-dialog__form">
+        <h2 className="task-dialog__title">New Task</h2>
+        <label className="task-dialog__label">Description</label>
+        <input type="text" name="description" className="task-dialog__input" placeholder="Description" value={values.description} onChange={handleChange} />
+        <input type="hidden" name="project" value={params.id} />
+        <label className="task-dialog__label">Status</label>
+        <select name="statuses" id="status" className="task-dialog__select" value={values.statuses} onChange={handleChange}
+>
+            <option value="">-- Kies status --</option>
+            {status.map((status) => (
+                <option key={status.id} value={status.id}>
+                {status.title}
+                </option>
+            ))}
+        </select>
+        <label className="task-dialog__label">Categories</label>
+        <div className="task-dialog__checkbox-group">
+        {categories.map((categorie) => (
+            <label key={categorie.id} className="task-dialog__checkbox-label">
+            <input type="checkbox" name="categories" value={categorie.id} checked={values.categories?.includes(String(categorie.id))} onChange={handleCategoryChange}     />
+            {categorie.title}
+            </label>
+        ))}
+
+        <label className="task-dialog__checkbox-label">
+            <input type="checkbox" name="categories" value="new" checked={values.categories?.includes("new")} onChange={handleCategoryChange} />
+            --New Tag--
+        </label>
+
+        {values.categories?.includes("new") && (
+            <input type="text" name="newTag" placeholder="Nieuwe tag" className="task-dialog__input" value={values.newTag || ""} onChange={handleChange} />
+        )}
+        </div>
+
+        <button type="submit" className="task-dialog__button">Submit</button>
+    </form>
+
+    <button type="button" className="task-dialog__button task-dialog__button--close" onClick={() => dialogRef?.current?.close()}
+    >
+        Close
+    </button>
+</dialog>
+
     </>
     );
 }

@@ -27,30 +27,34 @@ function RouteLayout() {
     
     return (
         <>
-            <aside>
-                <nav>
-                    <ul>
-                        <li><Link to="/">Home</Link></li>
+            <div className="layout">
+            <aside className="layout__sidebar">
+                <nav className="sidebar">
+                    <ul className="sidebar__section">
+                        <li className="sidebar__item"><Link className="sidebar__link" to="/">Home</Link></li>
                     </ul>
-                    <div>Projects</div>
-                    <ul>
-                    {projects.map(project => (
-                        <li key={project.id}>
-                            <Link to={`/projects/${project.id}`}>
-                                {project.title}
-                            </Link>
-                        </li>
-                    ))}
 
+                    <div className="sidebar__title">Projects</div>
+                    <ul className="sidebar__section">
+                        {projects.map(project => (
+                            <li key={project.id} className="sidebar__item">
+                                <Link className="sidebar__link" to={`/projects/${project.id}`}>
+                                    {project.title}
+                                </Link>
+                            </li>
+                        ))}
                     </ul>
-                    <div>Info</div>
-                    <ul>
-                        <li><Link to="/about">About</Link></li>
+
+                    <div className="sidebar__title">Info</div>
+                    <ul className="sidebar__section">
+                        <li className="sidebar__item"><Link className="sidebar__link" to="/about">About</Link></li>
                     </ul>
-                        {/* <div style={{ width: "2rem", height: "2rem", backgroundColor: "blue" }}></div> */}
                 </nav>
             </aside>
-            <Outlet />
+            <main className="layout__content">
+                <Outlet />
+            </main>
+        </div>
         </>
     );
 }

@@ -1,42 +1,229 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
+/* BEM styles for layout and sidebar */
+
+.layout {
+  display: flex;
+  min-height: 100vh;
+  font-family: sans-serif;
+}
+
+.layout__sidebar {
+  width: 240px;
+  background-color: #1e1e2f;
+  color: white;
+  padding: 1rem;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  overflow-y: auto;
+}
+
+.layout__content {
+  margin-left: 240px;
   padding: 2rem;
-  text-align: center;
+  flex: 1;
+  background-color: #f5f5f5;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+/* Sidebar BEM structure */
+.sidebar__title {
+  font-size: 1rem;
+  font-weight: bold;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.sidebar__section {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1rem;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.sidebar__item {
+  margin-bottom: 0.5rem;
 }
 
-.card {
-  padding: 2em;
+.sidebar__link {
+  color: white;
+  text-decoration: none;
+  padding: 0.4rem 0.8rem;
+  display: block;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
 }
 
-.read-the-docs {
-  color: #888;
+.sidebar__link:hover {
+  background-color: #343454;
+}
+
+/* project css */
+/* Grid layout voor statussen */
+.task-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  padding: 1rem;
+}
+
+/* Kolom voor elke status */
+.task-grid__column {
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+}
+
+.task-grid__title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+/* Taak als kaart */
+.task-card {
+  background-color: white;
+  border-radius: 6px;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.task-card__description {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.task-card__badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.task-card__badge {
+  background-color: #dedede;
+  border-radius: 12px;
+  padding: 0.2rem 0.6rem;
+  font-size: 0.8rem;
+  color: #333;
+}
+
+/* tasks filters */
+.task-controls {
+  padding: 1rem;
+  background-color: #f3f3f3;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.task-controls__form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.task-controls__select,
+.task-controls__input {
+  padding: 0.5rem;
+  font-size: 1rem;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  flex: 1;
+  min-width: 180px;
+}
+
+.task-controls__button {
+  padding: 0.5rem 1rem;
+  background-color: #ddd;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.task-controls__button:hover {
+  background-color: #ccc;
+}
+
+.task-controls__button--new {
+  background-color: #007bff;
+  color: white;
+}
+
+.task-controls__button--new:hover {
+  background-color: #0056b3;
+}
+
+.task-controls__actions {
+  display: flex;
+  gap: 0.75rem;
+}
+/* task-dialog */
+
+.task-dialog {
+  padding: 2rem;
+  border: none;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.task-dialog__form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.task-dialog__title {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.task-dialog__label {
+  font-weight: bold;
+}
+
+.task-dialog__input,
+.task-dialog__select {
+  padding: 0.5rem;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
+.task-dialog__checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.task-dialog__checkbox-label {
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.task-dialog__button {
+  padding: 0.6rem 1rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  font-weight: 500;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+
+.task-dialog__button:hover {
+  background-color: #0056b3;
+}
+
+.task-dialog__button--close {
+  background-color: #dc3545;
+}
+
+.task-dialog__button--close:hover {
+  background-color: #a71d2a;
 }
